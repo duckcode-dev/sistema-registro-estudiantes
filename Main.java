@@ -24,7 +24,7 @@ public class Main {
 
         int salir = 0;
 
-        EstudianteService service = new EstudianteService();
+        EstudianteService estudianteService = new EstudianteService();
 
         String[] datos = new String[3];
 
@@ -32,6 +32,7 @@ public class Main {
         String carrera = "";
         String promedio = "";
         double promedioCadena = 0;
+        boolean validacionAgregar;
 
         while (salir != 6) {
             System.out.println("1. Agregar estudiante");
@@ -80,10 +81,16 @@ public class Main {
                     datos[0] = nombre;
                     datos[1] = carrera;
                     datos[2] = promedio;
-                    System.out.println("promedio guardado: " + promedioCadena);
 
                     Estudiante estudiante = new Estudiante();
-                    service.agregarEstudiante(estudiante, datos);
+                    validacionAgregar = estudianteService.BuscarEstudiante(datos);
+
+                    if (validacionAgregar == false) {
+                        estudianteService.agregarEstudiante(estudiante, datos);
+                    }
+                    nombre = "";
+                    carrera = "";
+                    promedioCadena = 0;
                     break;
 
                 default:
