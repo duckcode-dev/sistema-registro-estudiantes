@@ -27,7 +27,7 @@ public class EstudianteService {
                     && estudiante.getPromedio().equalsIgnoreCase(datos[2])) {
                 validarEstudiante = true;
                 System.out.println("Estudiante ya existe ID: " + estudiante.getId());
-
+                break;
             } else {
                 validarEstudiante = false;
             }
