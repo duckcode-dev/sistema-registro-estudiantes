@@ -26,11 +26,13 @@ public class Main {
 
         String[] datos = new String[3];
 
+        String id = "";
         String nombre = "";
         String carrera = "";
         String promedio = "";
         double promedioCadena = 0;
         boolean validacionAgregar;
+        boolean validarEstudiante;
 
         while (salir != 6) {
             System.out.println("1. Agregar estudiante");
@@ -94,8 +96,16 @@ public class Main {
                     System.out.println("***LISTAR ESTUDIANTES****");
                     estudianteService.listarEstudiantes();
                     break;
+                case 3:
+                    System.out.println("***BUSCAR ESTUDIANTE POR ID***");
+                    System.out.println("Ingrese el ID del estudiante:");
+                    id = entrada.nextLine();
+                    validarEstudiante = estudianteService.BuscarEstudiante(id);
+                    if (validarEstudiante == false) {
+                        System.out.println("error!, ID no encontrado.");
+                    }
                 default:
-                    System.out.println("¡que tenga buena día!");
+                    System.out.println("¡que tenga buen día!");
                     break;
             }
         }

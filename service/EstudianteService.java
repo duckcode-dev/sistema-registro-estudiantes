@@ -46,4 +46,22 @@ public class EstudianteService {
         return String.format("EST%03d", contador++);
     }
 
+    // bsucar estudiante por id
+    public boolean BuscarEstudiante(String id) {
+        boolean validarEstudiante = false;
+        for (Estudiante estudiante : estudiantes) {
+            if (estudiante.getId().equalsIgnoreCase(id)) {
+                validarEstudiante = true;
+                System.out.println("Estudiante Encontrado)");
+                System.out.println("información del estudiante: ");
+                System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre() + ", Carrera: "
+                        + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
+                break;
+            } else {
+                validarEstudiante = false;
+            }
+        }
+        return validarEstudiante;
+    }
+
 }
