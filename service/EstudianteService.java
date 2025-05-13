@@ -9,6 +9,7 @@ public class EstudianteService {
 
     private static final List<Estudiante> estudiantes = new ArrayList<>();
     private static int contador = 1;
+    private static boolean validarEstudiante;
 
     public boolean agregarEstudiante(Estudiante estudiante, String[] datos) {
         estudiante.setId(generarId());
@@ -20,8 +21,8 @@ public class EstudianteService {
         return true;
     }
 
-    public boolean BuscarEstudiante(String[] datos) {
-        boolean validarEstudiante = false;
+    public boolean buscarEstudiante(String[] datos) {
+
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getNombre().equalsIgnoreCase(datos[0]) && estudiante.getCarrerra().equalsIgnoreCase(datos[1])
                     && estudiante.getPromedio().equalsIgnoreCase(datos[2])) {
@@ -48,14 +49,31 @@ public class EstudianteService {
 
     // bsucar estudiante por id
     public boolean BuscarEstudiante(String id) {
-        boolean validarEstudiante = false;
+
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getId().equalsIgnoreCase(id)) {
                 validarEstudiante = true;
-                System.out.println("Estudiante Encontrado)");
+                System.out.println("Estudiante Encontrado");
                 System.out.println("información del estudiante: ");
                 System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre() + ", Carrera: "
                         + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
+                break;
+            } else {
+                validarEstudiante = false;
+            }
+        }
+        return validarEstudiante;
+    }
+
+    // modificar estudiante
+    public boolean editarEstudiante(Estudiante estudiante, String[] datos) {
+
+        for (Estudiante estudianteDos : estudiantes) {
+            if (estudianteDos.getId().equalsIgnoreCase(datos[3])) {
+                validarEstudiante = true;
+                estudianteDos.setNombre(datos[0]);
+                estudianteDos.setCarrerra(datos[1]);
+                estudianteDos.setPromedio(datos[2]);
                 break;
             } else {
                 validarEstudiante = false;

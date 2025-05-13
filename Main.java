@@ -24,7 +24,7 @@ public class Main {
 
         EstudianteService estudianteService = new EstudianteService();
 
-        String[] datos = new String[3];
+        String[] datos = new String[4];
 
         String id = "";
         String nombre = "";
@@ -33,6 +33,8 @@ public class Main {
         double promedioCadena = 0;
         boolean validacionAgregar;
         boolean validarEstudiante;
+
+        Estudiante estudiante = new Estudiante();
 
         while (salir != 6) {
             System.out.println("1. Agregar estudiante");
@@ -82,8 +84,7 @@ public class Main {
                     datos[1] = carrera;
                     datos[2] = promedio;
 
-                    Estudiante estudiante = new Estudiante();
-                    validacionAgregar = estudianteService.BuscarEstudiante(datos);
+                    validacionAgregar = estudianteService.buscarEstudiante(datos);
 
                     if (validacionAgregar == false) {
                         estudianteService.agregarEstudiante(estudiante, datos);
@@ -104,6 +105,61 @@ public class Main {
                     if (validarEstudiante == false) {
                         System.out.println("error!, ID no encontrado.");
                     }
+                    break;
+                case 4:
+                    System.out.println("***EDITAR ESTUDIANTE***");
+                    System.out.println("Ingrese el ID del estudiante:");
+                    id = entrada.nextLine();
+                    validarEstudiante = estudianteService.BuscarEstudiante(id);
+                    if (validarEstudiante == false) {
+                        System.out.println("error!, ID no encontrado.");
+                    } else {
+                        while (nombre.isEmpty()) {
+                            System.out.println("Nombre:");
+                            nombre = entrada.nextLine();
+                            if (nombre.isEmpty()) {
+                                System.out.println("error!, ingrese nombre válido.");
+                            }
+                        }
+                        while (carrera.isEmpty()) {
+                            System.out.println("Carrera:");
+                            carrera = entrada.nextLine();
+                            if (carrera.isEmpty()) {
+                                System.out.println("error!, ingrese carrera válido.");
+                            }
+                        }
+
+                        while (promedioCadena < 1 || promedioCadena > 7) {
+                            try {
+                                System.out.println("Promedio:");
+                                promedio = entrada.nextLine();
+                                promedioCadena = Double.parseDouble(promedio);
+                                System.out.println();
+                            } catch (NumberFormatException e) {
+                                System.out.println("error!, ingrese promedio válido.");
+                            }
+                            if (promedioCadena < 1 || promedioCadena > 7) {
+                                System.out.println("error!, ingrese promedio válido entre 1 y 7.");
+                            }
+                        }
+
+                        datos[0] = nombre;
+                        datos[1] = carrera;
+                        datos[2] = promedio;
+                        datos[3] = id;
+
+                        validarEstudiante = estudianteService.editarEstudiante(estudiante, datos);
+
+                        if (validarEstudiante) {
+                            System.out.println("¡datos modificados de manera exitosa!");
+                        }
+
+                        nombre = "";
+                        carrera = "";
+                        promedioCadena = 0;
+                        id = "";
+                    }
+                    break;
                 default:
                     System.out.println("¡que tenga buen día!");
                     break;
