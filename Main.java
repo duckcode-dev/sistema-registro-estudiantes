@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.Estudiante;
@@ -92,7 +90,10 @@ public class Main {
                     carrera = "";
                     promedioCadena = 0;
                     break;
-
+                case 2:
+                    System.out.println("***LISTAR ESTUDIANTES****");
+                    estudianteService.listarEstudiantes();
+                    break;
                 default:
                     System.out.println("¡que tenga buena día!");
                     break;

@@ -35,6 +35,13 @@ public class EstudianteService {
         return validarEstudiante;
     }
 
+    public void listarEstudiantes() {
+        for (Estudiante estudiante : estudiantes) {
+            System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre() + ", Carrera: "
+                    + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
+        }
+    }
+
     public static String generarId() {
         return String.format("EST%03d", contador++);
     }
