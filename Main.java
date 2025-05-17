@@ -34,7 +34,7 @@ public class Main {
         boolean validacionAgregar;
         boolean validarEstudiante;
 
-        Estudiante estudiante = new Estudiante();
+      
 
         while (salir != 6) {
             System.out.println("1. Agregar estudiante");
@@ -71,7 +71,6 @@ public class Main {
                             System.out.println("Promedio:");
                             promedio = entrada.nextLine();
                             promedioCadena = Double.parseDouble(promedio);
-                            System.out.println();
                         } catch (NumberFormatException e) {
                             System.out.println("error!, ingrese promedio válido.");
                         }
@@ -87,79 +86,97 @@ public class Main {
                     validacionAgregar = estudianteService.buscarEstudiante(datos);
 
                     if (validacionAgregar == false) {
+                        Estudiante estudiante = new Estudiante();
                         estudianteService.agregarEstudiante(estudiante, datos);
                     }
                     nombre = "";
                     carrera = "";
                     promedioCadena = 0;
                     break;
+
                 case 2:
                     System.out.println("***LISTAR ESTUDIANTES****");
                     estudianteService.listarEstudiantes();
                     break;
-                case 3:
-                    System.out.println("***BUSCAR ESTUDIANTE POR ID***");
-                    System.out.println("Ingrese el ID del estudiante:");
-                    id = entrada.nextLine();
-                    validarEstudiante = estudianteService.BuscarEstudiante(id);
-                    if (validarEstudiante == false) {
-                        System.out.println("error!, ID no encontrado.");
-                    }
-                    break;
-                case 4:
-                    System.out.println("***EDITAR ESTUDIANTE***");
-                    System.out.println("Ingrese el ID del estudiante:");
-                    id = entrada.nextLine();
-                    validarEstudiante = estudianteService.BuscarEstudiante(id);
-                    if (validarEstudiante == false) {
-                        System.out.println("error!, ID no encontrado.");
-                    } else {
-                        while (nombre.isEmpty()) {
-                            System.out.println("Nombre:");
-                            nombre = entrada.nextLine();
-                            if (nombre.isEmpty()) {
-                                System.out.println("error!, ingrese nombre válido.");
-                            }
-                        }
-                        while (carrera.isEmpty()) {
-                            System.out.println("Carrera:");
-                            carrera = entrada.nextLine();
-                            if (carrera.isEmpty()) {
-                                System.out.println("error!, ingrese carrera válido.");
-                            }
-                        }
-
-                        while (promedioCadena < 1 || promedioCadena > 7) {
-                            try {
-                                System.out.println("Promedio:");
-                                promedio = entrada.nextLine();
-                                promedioCadena = Double.parseDouble(promedio);
-                                System.out.println();
-                            } catch (NumberFormatException e) {
-                                System.out.println("error!, ingrese promedio válido.");
-                            }
-                            if (promedioCadena < 1 || promedioCadena > 7) {
-                                System.out.println("error!, ingrese promedio válido entre 1 y 7.");
-                            }
-                        }
-
-                        datos[0] = nombre;
-                        datos[1] = carrera;
-                        datos[2] = promedio;
-                        datos[3] = id;
-
-                        validarEstudiante = estudianteService.editarEstudiante(estudiante, datos);
-
-                        if (validarEstudiante) {
-                            System.out.println("¡datos modificados de manera exitosa!");
-                        }
-
-                        nombre = "";
-                        carrera = "";
-                        promedioCadena = 0;
-                        id = "";
-                    }
-                    break;
+                
+                 case 3:
+                 System.out.println("***BUSCAR ESTUDIANTE POR ID***");
+                 System.out.println("Ingrese el ID del estudiante:");
+                 id = entrada.nextLine();
+                 validarEstudiante = estudianteService.BuscarEstudiante(id);
+                 if (validarEstudiante == false) {
+                 System.out.println("error!, ID no encontrado.");
+                 }
+                 break;
+                 case 4:
+                  System.out.println("***EDITAR ESTUDIANTE***");
+                  System.out.println("Ingrese el ID del estudiante:");
+                  id = entrada.nextLine();
+                  validarEstudiante = estudianteService.BuscarEstudiante(id);
+                  if (validarEstudiante == false) {
+                  System.out.println("error!, ID no encontrado.");
+                  } else {
+                  while (nombre.isEmpty()) {
+                  System.out.println("Nombre:");
+                  nombre = entrada.nextLine();
+                  if (nombre.isEmpty()) {
+                  System.out.println("error!, ingrese nombre válido.");
+                  }
+                  }
+                  while (carrera.isEmpty()) {
+                  System.out.println("Carrera:");
+                  carrera = entrada.nextLine();
+                  if (carrera.isEmpty()) {
+                  System.out.println("error!, ingrese carrera válido.");
+                  }
+                  }
+                  
+                  while (promedioCadena < 1 || promedioCadena > 7) {
+                  try {
+                  System.out.println("Promedio:");
+                  promedio = entrada.nextLine();
+                  promedioCadena = Double.parseDouble(promedio);
+                  System.out.println();
+                  } catch (NumberFormatException e) {
+                  System.out.println("error!, ingrese promedio válido.");
+                  }
+                  if (promedioCadena < 1 || promedioCadena > 7) {
+                  System.out.println("error!, ingrese promedio válido entre 1 y 7.");
+                  }
+                  }
+                  
+                  datos[0] = nombre;
+                  datos[1] = carrera;
+                  datos[2] = promedio;
+                  datos[3] = id;
+                  
+                  Estudiante estudianteModificar = new Estudiante();
+                  validarEstudiante = estudianteService.editarEstudiante(estudianteModificar, datos);
+                  
+                  if (validarEstudiante) {
+                  System.out.println("¡datos modificados de manera exitosa!");
+                  }
+                 
+                  nombre = "";
+                  carrera = "";
+                  promedioCadena = 0;
+                  id = "";
+                  }
+                  break;
+                 case 5:
+                  System.out.println("***ELIMINAR ESTUDIANTE***");
+                  System.out.println("Ingrese el ID del estudiante:");
+                  id = entrada.nextLine();
+                  validarEstudiante = estudianteService.BuscarEstudiante(id);
+                  if (validarEstudiante == false) {
+                  System.out.println("error!, ID no encontrado.");
+                  } else {
+                  estudianteService.eliminarEstudiante(id);
+                  System.out.println("Estudiante Eliminado!");
+                  }
+                  id = "";
+                  break;
+                 
                 default:
                     System.out.println("¡que tenga buen día!");
                     break;
