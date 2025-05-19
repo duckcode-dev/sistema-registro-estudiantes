@@ -34,7 +34,7 @@ public class Main {
         boolean validacionAgregar;
         boolean validarEstudiante;
 
-        while (salir != 6) {
+        while (salir != 7) {
             System.out.println("");
             System.out.println("***SISTEMA DE REGISTRO DE ESTUDIANTES***");
             System.out.println("1. Agregar estudiante");
@@ -42,10 +42,10 @@ public class Main {
             System.out.println("3. Buscar por ID");
             System.out.println("4. Editar estudiante");
             System.out.println("5. Eliminar estudiante");
-            System.out.println("6. Salir");
+            System.out.println("6. Exportar a CSV");
+            System.out.println("7. Salir");
             salir = entrada.nextInt();
             entrada.nextLine();// Esta línea consume el salto de línea pendiente
-
             switch (salir) {
                 case 1:
                     System.out.println("***AGREGAR ESTUDIANTE****");
@@ -175,6 +175,14 @@ public class Main {
                         System.out.println("Estudiante Eliminado!");
                     }
                     id = "";
+                    break;
+                case 6:
+                    System.out.println("***EXPORTAR A CSV***");
+                    if (estudianteService.exportarCSV()) {
+                        System.out.println("Archivo CSV creado exitosamente!");
+                    } else {
+                        System.out.println("Error al crear el archivo CSV");
+                    }
                     break;
 
                 default:
