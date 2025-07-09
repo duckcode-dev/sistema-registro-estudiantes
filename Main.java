@@ -105,7 +105,7 @@ public class Main {
                     id = entrada.nextLine();
                     validarEstudiante = estudianteService.BuscarEstudiante(id);
                     if (validarEstudiante == false) {
-                        System.out.println("error!, ID no encontrado.");
+                        System.out.println("¡Estudiante no existe!.");
                     }
                     break;
                 case 4:
