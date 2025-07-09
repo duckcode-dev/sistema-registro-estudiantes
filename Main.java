@@ -169,7 +169,7 @@ public class Main {
                     id = entrada.nextLine();
                     validarEstudiante = estudianteService.BuscarEstudiante(id);
                     if (validarEstudiante == false) {
-                        System.out.println("error!, ID no encontrado.");
+                        System.out.println("¡estudiante no encontrado.!");
                     } else {
                         estudianteService.eliminarEstudiante(id);
                         System.out.println("Estudiante Eliminado!");
