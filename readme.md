@@ -35,7 +35,7 @@ sistema-registro-estudiantes/
 1. Compile los archivos Java:
 
 ```bash
-javac Main.java model/Estudiante.java 
+javac Main.java model/Estudiante.java service/EstudianteService.java
 ```
 
 2. Ejecute la aplicación:
