@@ -1,7 +1,10 @@
 package service;
 
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,23 +107,35 @@ public class EstudianteService {
 
     // método para exportar la lista a archivo .csv
     public boolean exportarCSV() {
-        String ruta = "C:\\Users\\patri\\OneDrive\\Escritorio\\proyectos\\sistema-registro-estudiantes\\archivos csv\\estudiantes.csv";
-        try (FileWriter writer = new FileWriter(ruta)) {
+        Path ruta = Paths.get("archivos csv", "estudiantes.csv");
+        try {
+            Files.createDirectories(ruta.getParent());
+        } catch (IOException e) {
+            System.out.println("No se pudo crear el directorio de exportación: " + e.getMessage());
+            return false;
+        }
+
+        try (java.io.BufferedWriter writer = Files.newBufferedWriter(ruta, StandardCharsets.UTF_8)) {
             // Escribir encabezados
             writer.write("ID,Nombre,Carrera,Promedio\n");
 
             // Escribir datos de cada estudiante
             for (Estudiante estudiante : estudiantes) {
                 writer.write(String.format("%s,%s,%s,%s\n",
-                        estudiante.getId(),
-                        estudiante.getNombre(),
-                        estudiante.getCarrerra(),
-                        estudiante.getPromedio()));
+                        escaparCampoCsv(estudiante.getId()),
+                        escaparCampoCsv(estudiante.getNombre()),
+                        escaparCampoCsv(estudiante.getCarrerra()),
+                        escaparCampoCsv(estudiante.getPromedio())));
             }
             return true;
         } catch (IOException e) {
-            System.out.println("Error al escribir el archivo CSV: " + e.getMessage());
+            System.out.println("Error al escribir el archivo CSV en " + ruta.toAbsolutePath() + ": " + e.getMessage());
             return false;
         }
+    }
+
+    private String escaparCampoCsv(String valor) {
+        String valorEscapado = valor.replace("\"", "\"\"");
+        return "\"" + valorEscapado + "\"";
     }
 }
