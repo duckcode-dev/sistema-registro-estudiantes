@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-import model.Estudiante;
 import service.EstudianteService;
 
 public class Main {
@@ -24,13 +23,10 @@ public class Main {
 
         EstudianteService estudianteService = new EstudianteService();
 
-        String[] datos = new String[4];
-
         String id = "";
         String nombre = "";
         String carrera = "";
-        String promedio = "";
-        double promedioCadena = 0;
+        double promedio = 0;
         boolean validacionAgregar;
         boolean validarEstudiante;
 
@@ -66,32 +62,26 @@ public class Main {
                         }
                     }
 
-                    while (promedioCadena < 1 || promedioCadena > 7) {
+                    while (!esPromedioValido(promedio)) {
                         try {
                             System.out.println("Promedio:");
-                            promedio = entrada.nextLine();
-                            promedioCadena = Double.parseDouble(promedio);
+                            promedio = Double.parseDouble(entrada.nextLine());
                         } catch (NumberFormatException e) {
                             System.out.println("error!, ingrese promedio válido.");
                         }
-                        if (promedioCadena < 1 || promedioCadena > 7) {
+                        if (!esPromedioValido(promedio)) {
                             System.out.println("error!, ingrese promedio válido entre 1 y 7.");
                         }
                     }
 
-                    datos[0] = nombre;
-                    datos[1] = carrera;
-                    datos[2] = promedio;
-
-                    validacionAgregar = estudianteService.buscarEstudiante(datos);
+                    validacionAgregar = estudianteService.buscarEstudiante(nombre, carrera, promedio);
 
                     if (validacionAgregar == false) {
-                        Estudiante estudiante = new Estudiante();
-                        estudianteService.agregarEstudiante(estudiante, datos);
+                        estudianteService.agregarEstudiante(nombre, carrera, promedio);
                     }
                     nombre = "";
                     carrera = "";
-                    promedioCadena = 0;
+                    promedio = 0;
                     break;
 
                 case 2:
@@ -131,27 +121,20 @@ public class Main {
                             }
                         }
 
-                        while (promedioCadena < 1 || promedioCadena > 7) {
+                        while (!esPromedioValido(promedio)) {
                             try {
                                 System.out.println("Promedio:");
-                                promedio = entrada.nextLine();
-                                promedioCadena = Double.parseDouble(promedio);
+                                promedio = Double.parseDouble(entrada.nextLine());
                                 System.out.println();
                             } catch (NumberFormatException e) {
                                 System.out.println("error!, ingrese promedio válido.");
                             }
-                            if (promedioCadena < 1 || promedioCadena > 7) {
+                            if (!esPromedioValido(promedio)) {
                                 System.out.println("error!, ingrese promedio válido entre 1 y 7.");
                             }
                         }
 
-                        datos[0] = nombre;
-                        datos[1] = carrera;
-                        datos[2] = promedio;
-                        datos[3] = id;
-
-                        Estudiante estudianteModificar = new Estudiante();
-                        validarEstudiante = estudianteService.editarEstudiante(estudianteModificar, datos);
+                        validarEstudiante = estudianteService.editarEstudiante(id, nombre, carrera, promedio);
 
                         if (validarEstudiante) {
                             System.out.println("¡datos modificados de manera exitosa!");
@@ -159,7 +142,7 @@ public class Main {
 
                         nombre = "";
                         carrera = "";
-                        promedioCadena = 0;
+                        promedio = 0;
                         id = "";
                     }
                     break;
@@ -192,5 +175,9 @@ public class Main {
         }
 
         entrada.close();
+    }
+
+    private static boolean esPromedioValido(double promedio) {
+        return Double.isFinite(promedio) && promedio >= 1.0 && promedio <= 7.0;
     }
 }

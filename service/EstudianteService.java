@@ -16,22 +16,19 @@ public class EstudianteService {
     private int contador = 1;
 
     // funcion para agregar estudiante
-    public boolean agregarEstudiante(Estudiante estudiante, String[] datos) {
-        estudiante.setId(generarId());
-        estudiante.setNombre(datos[0]);
-        estudiante.setCarrerra(datos[1]);
-        estudiante.setPromedio(datos[2]);
+    public boolean agregarEstudiante(String nombre, String carrera, double promedio) {
+        Estudiante estudiante = new Estudiante(generarId(), nombre, carrera, promedio);
         estudiantes.add(estudiante);
         System.out.println("Estudiante agregado con éxito! ID : " + estudiante.getId());
         return true;
     }
 
     // funcion para buscar estudiante por nombre, carrera, promedio
-    public boolean buscarEstudiante(String[] datos) {
+    public boolean buscarEstudiante(String nombre, String carrera, double promedio) {
 
         for (Estudiante estudiante : estudiantes) {
-            if (estudiante.getNombre().equalsIgnoreCase(datos[0]) && estudiante.getCarrerra().equalsIgnoreCase(datos[1])
-                    && estudiante.getPromedio().equalsIgnoreCase(datos[2])) {
+            if (estudiante.getNombre().equalsIgnoreCase(nombre) && estudiante.getCarrerra().equalsIgnoreCase(carrera)
+                    && Double.compare(estudiante.getPromedio(), promedio) == 0) {
                 System.out.println("Estudiante ya existe ID: " + estudiante.getId());
                 return true;
             }
@@ -69,13 +66,13 @@ public class EstudianteService {
     }
 
     // modificar estudiante
-    public boolean editarEstudiante(Estudiante estudiante, String[] datos) {
+    public boolean editarEstudiante(String id, String nombre, String carrera, double promedio) {
 
         for (Estudiante estudianteDos : estudiantes) {
-            if (estudianteDos.getId().equalsIgnoreCase(datos[3])) {
-                estudianteDos.setNombre(datos[0]);
-                estudianteDos.setCarrerra(datos[1]);
-                estudianteDos.setPromedio(datos[2]);
+            if (estudianteDos.getId().equalsIgnoreCase(id)) {
+                estudianteDos.setNombre(nombre);
+                estudianteDos.setCarrerra(carrera);
+                estudianteDos.setPromedio(promedio);
                 return true;
             }
         }
@@ -114,7 +111,7 @@ public class EstudianteService {
                         escaparCampoCsv(estudiante.getId()),
                         escaparCampoCsv(estudiante.getNombre()),
                         escaparCampoCsv(estudiante.getCarrerra()),
-                        escaparCampoCsv(estudiante.getPromedio())));
+                        escaparCampoCsv(String.valueOf(estudiante.getPromedio()))));
             }
             return true;
         } catch (IOException e) {

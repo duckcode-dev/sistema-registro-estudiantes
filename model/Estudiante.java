@@ -4,14 +4,14 @@ public class Estudiante {
     private String id;
     private String nombre;
     private String carrerra;
-    private String promedio;
+    private double promedio;
 
     // constructor vacío
     public Estudiante() {
     }
 
     // constructor parametrizado
-    public Estudiante(String id, String nombre, String carrerra, String promedio) {
+    public Estudiante(String id, String nombre, String carrerra, double promedio) {
         // Validación para evitar valores null en campos críticos
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("El ID del estudiante no puede ser null o vacío");
@@ -22,14 +22,10 @@ public class Estudiante {
         if (carrerra == null || carrerra.trim().isEmpty()) {
             throw new IllegalArgumentException("La carrera del estudiante no puede ser null o vacía");
         }
-        if (promedio == null || promedio.trim().isEmpty()) {
-            throw new IllegalArgumentException("El promedio del estudiante no puede ser null o vacía");
-        }
-
         this.id = id;
         this.nombre = nombre;
         this.carrerra = carrerra;
-        this.promedio = promedio;
+        setPromedio(promedio);
     }
 
     // Métodos getter y setter con validaciones
@@ -66,13 +62,13 @@ public class Estudiante {
         this.carrerra = carrerra;
     }
 
-    public String getPromedio() {
+    public double getPromedio() {
         return promedio;
     }
 
-    public void setPromedio(String promedio) {
-        if (promedio == null || promedio.trim().isEmpty()) {
-            throw new IllegalArgumentException("El promedio no puede ser null o vacía");
+    public void setPromedio(double promedio) {
+        if (!Double.isFinite(promedio) || promedio < 1.0 || promedio > 7.0) {
+            throw new IllegalArgumentException("El promedio debe estar entre 1.0 y 7.0");
         }
         this.promedio = promedio;
     }
