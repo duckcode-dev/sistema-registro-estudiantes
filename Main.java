@@ -17,17 +17,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        /*
-         * 1. Sistema de Registro de Estudiantes
-         * Descripción: CRUD para registrar estudiantes con campos como nombre, ID,
-         * carrera, promedio, etc.
-         * 
-         * Extras: Puedes agregar validaciones y exportar a CSV.
-         * 
-         * Qué demuestra: Comprensión de POO, colecciones (ArrayList, HashMap) y
-         * separación de responsabilidades (MVC).
-         */
-
         Scanner entrada = new Scanner(System.in);
 
         int salir = 0;
