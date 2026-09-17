@@ -12,9 +12,8 @@ import model.Estudiante;
 
 public class EstudianteService {
 
-    private static final List<Estudiante> estudiantes = new ArrayList<>();
-    private static int contador = 1;
-    private static boolean validarEstudiante;
+    private final List<Estudiante> estudiantes = new ArrayList<>();
+    private int contador = 1;
 
     // funcion para agregar estudiante
     public boolean agregarEstudiante(Estudiante estudiante, String[] datos) {
@@ -33,18 +32,15 @@ public class EstudianteService {
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getNombre().equalsIgnoreCase(datos[0]) && estudiante.getCarrerra().equalsIgnoreCase(datos[1])
                     && estudiante.getPromedio().equalsIgnoreCase(datos[2])) {
-                validarEstudiante = true;
                 System.out.println("Estudiante ya existe ID: " + estudiante.getId());
-                break;
-            } else {
-                validarEstudiante = false;
+                return true;
             }
         }
-        return validarEstudiante;
+        return false;
     }
 
     // generador de id
-    public static String generarId() {
+    public String generarId() {
         return String.format("EST%03d", contador++);
     }
 
@@ -61,18 +57,15 @@ public class EstudianteService {
 
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getId().equalsIgnoreCase(id)) {
-                validarEstudiante = true;
                 System.out.println("Estudiante Encontrado");
                 System.out.println("información del estudiante: ");
                 System.out.println("ID: " + estudiante.getId() + ", Nombre: " +
                         estudiante.getNombre() + ", Carrera: "
                         + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
-                break;
-            } else {
-                validarEstudiante = false;
+                return true;
             }
         }
-        return validarEstudiante;
+        return false;
     }
 
     // modificar estudiante
@@ -80,16 +73,13 @@ public class EstudianteService {
 
         for (Estudiante estudianteDos : estudiantes) {
             if (estudianteDos.getId().equalsIgnoreCase(datos[3])) {
-                validarEstudiante = true;
                 estudianteDos.setNombre(datos[0]);
                 estudianteDos.setCarrerra(datos[1]);
                 estudianteDos.setPromedio(datos[2]);
-                break;
-            } else {
-                validarEstudiante = false;
+                return true;
             }
         }
-        return validarEstudiante;
+        return false;
     }
 
     // Eliminar Estudiante
@@ -97,7 +87,6 @@ public class EstudianteService {
 
         for (Estudiante estudianteTres : estudiantes) {
             if (estudianteTres.getId().equalsIgnoreCase(id)) {
-                validarEstudiante = true;
                 // eliminar estudiante
                 estudiantes.remove(estudianteTres);
                 break;
