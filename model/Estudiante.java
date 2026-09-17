@@ -1,5 +1,14 @@
 package model;
 
+/**
+ * Clase que representa un estudiante.
+ * Contiene información sobre el ID, nombre, carrera y promedio del estudiante.
+ * 
+ * @author Patricio Fernández
+ * @author github.com/duckcode-dev
+ * 
+ */
+
 public class Estudiante {
     private String id;
     private String nombre;
