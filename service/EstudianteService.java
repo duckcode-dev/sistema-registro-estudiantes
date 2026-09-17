@@ -12,6 +12,16 @@ import java.util.Locale;
 
 import model.Estudiante;
 
+/**
+ * Clase que representa el servicio para gestionar estudiantes.
+ * Proporciona métodos para agregar, buscar, editar y eliminar estudiantes,
+ * así como para guardar y cargar datos desde un archivo CSV.
+ * 
+ * @author Patricio Fernández
+ * @author github.com/duckcode-dev
+ * 
+ */
+
 public class EstudianteService {
 
     private static final Path RUTA_CSV = Paths.get("archivos csv", "estudiantes.csv");
@@ -141,7 +151,8 @@ public class EstudianteService {
             }
             return true;
         } catch (IOException e) {
-            System.out.println("Error al escribir el archivo CSV en " + RUTA_CSV.toAbsolutePath() + ": " + e.getMessage());
+            System.out.println(
+                    "Error al escribir el archivo CSV en " + RUTA_CSV.toAbsolutePath() + ": " + e.getMessage());
             return false;
         }
     }
