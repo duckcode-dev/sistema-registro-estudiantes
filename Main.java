@@ -2,6 +2,17 @@ import java.util.Scanner;
 
 import service.EstudianteService;
 
+/**
+ * Clase principal que contiene el método main para ejecutar el sistema de
+ * registro de estudiantes.
+ * Proporciona un menú interactivo para agregar, listar, buscar, editar y
+ * eliminar estudiantes.
+ * 
+ * @author Patricio Fernández
+ * @author github.com/duckcode-dev
+ * 
+ */
+
 public class Main {
 
     public static void main(String[] args) {
