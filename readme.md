@@ -9,7 +9,7 @@ Este proyecto implementa un sistema CRUD (Crear, Leer, Actualizar, Eliminar) par
 - Buscar por ID : Permite encontrar un estudiante específico mediante su identificador único.
 - Editar información : Actualiza los datos de estudiantes existentes.
 - Eliminar registros : Elimina estudiantes del sistema.
-- Exportar a CSV : Guarda la información de los estudiantes en un archivo CSV para su uso externo.
+- Persistencia automática en CSV : Guarda los cambios en un archivo CSV después de agregar, editar o eliminar estudiantes.
 
 Estructura del Proyecto
 sistema-registro-estudiantes/
@@ -50,8 +50,8 @@ java Main
 - Se valida que los campos no estén vacíos
 - El promedio debe estar en el rango de 1.0 a 7.0
 
-### Exportación a CSV
-- Los datos se exportan a un archivo CSV ubicado en la carpeta "archivos csv"
+### Persistencia en CSV
+- Los datos se guardan automáticamente en un archivo CSV ubicado en la carpeta "archivos csv"
 - El formato incluye: ID, Nombre, Carrera, Promedio
 
 ## Demostración de Conceptos

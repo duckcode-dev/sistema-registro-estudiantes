@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import model.Estudiante;
 
@@ -71,6 +72,24 @@ public class EstudianteService {
         return false;
     }
 
+    public boolean buscarPorNombre(String textoBuscado) {
+        String busquedaNormalizada = textoBuscado.trim().toLowerCase(Locale.ROOT);
+        boolean encontrado = false;
+
+        for (Estudiante estudiante : estudiantes) {
+            String nombreNormalizado = estudiante.getNombre().toLowerCase(Locale.ROOT);
+            if (nombreNormalizado.contains(busquedaNormalizada)) {
+                if (!encontrado) {
+                    System.out.println("Estudiantes encontrados:");
+                }
+                System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre()
+                        + ", Carrera: " + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
+                encontrado = true;
+            }
+        }
+        return encontrado;
+    }
+
     // modificar estudiante
     public boolean editarEstudiante(String id, String nombre, String carrera, double promedio) {
 
@@ -98,11 +117,6 @@ public class EstudianteService {
             }
         }
         return false;
-    }
-
-    // método para exportar la lista a archivo .csv
-    public boolean exportarCSV() {
-        return guardarEnCsv();
     }
 
     private boolean guardarEnCsv() {

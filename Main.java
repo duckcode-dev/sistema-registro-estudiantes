@@ -29,20 +29,19 @@ public class Main {
         double promedio = 0;
         boolean validarEstudiante;
 
-        while (salir != 7) {
+        while (salir != 6) {
             System.out.println("");
             System.out.println("***SISTEMA DE REGISTRO DE ESTUDIANTES***");
             System.out.println("1. Agregar estudiante");
             System.out.println("2. Listar estudiante");
-            System.out.println("3. Buscar por ID");
+            System.out.println("3. Buscar por nombre");
             System.out.println("4. Editar estudiante");
             System.out.println("5. Eliminar estudiante");
-            System.out.println("6. Exportar a CSV");
-            System.out.println("7. Salir");
+            System.out.println("6. Salir");
             try {
                 salir = Integer.parseInt(entrada.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Error: ingrese un número entre 1 y 7.");
+                System.out.println("Error: ingrese un número entre 1 y 6.");
                 continue;
             }
             switch (salir) {
@@ -91,13 +90,15 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("***BUSCAR ESTUDIANTE POR ID***");
-                    System.out.println("Ingrese el ID del estudiante:");
-                    id = entrada.nextLine();
-                    validarEstudiante = estudianteService.buscarPorId(id);
-                    if (validarEstudiante == false) {
-                        System.out.println("¡Estudiante no existe!.");
+                    System.out.println("***BUSCAR ESTUDIANTE POR NOMBRE***");
+                    System.out.println("Ingrese el nombre o parte del nombre:");
+                    nombre = entrada.nextLine().trim();
+                    if (nombre.isEmpty()) {
+                        System.out.println("Error: ingrese un nombre para buscar.");
+                    } else if (!estudianteService.buscarPorNombre(nombre)) {
+                        System.out.println("¡No se encontraron estudiantes con ese nombre!");
                     }
+                    nombre = "";
                     break;
                 case 4:
                     System.out.println("***EDITAR ESTUDIANTE***");
@@ -159,19 +160,10 @@ public class Main {
                     id = "";
                     break;
                 case 6:
-                    System.out.println("***EXPORTAR A CSV***");
-                    if (estudianteService.exportarCSV()) {
-                        System.out.println("Archivo CSV creado exitosamente!");
-                    } else {
-                        System.out.println("Error al crear el archivo CSV");
-                    }
-                    break;
-
-                case 7:
                     System.out.println("¡que tenga buen día!");
                     break;
                 default:
-                    System.out.println("Error: opción no válida. Ingrese un número entre 1 y 7.");
+                    System.out.println("Error: opción no válida. Ingrese un número entre 1 y 6.");
                     break;
             }
         }
