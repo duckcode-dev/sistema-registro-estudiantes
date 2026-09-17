@@ -27,7 +27,6 @@ public class Main {
         String nombre = "";
         String carrera = "";
         double promedio = 0;
-        boolean validacionAgregar;
         boolean validarEstudiante;
 
         while (salir != 7) {
@@ -74,9 +73,7 @@ public class Main {
                         }
                     }
 
-                    validacionAgregar = estudianteService.buscarEstudiante(nombre, carrera, promedio);
-
-                    if (validacionAgregar == false) {
+                    if (!estudianteService.existeEstudiante(nombre, carrera, promedio)) {
                         estudianteService.agregarEstudiante(nombre, carrera, promedio);
                     }
                     nombre = "";
@@ -93,7 +90,7 @@ public class Main {
                     System.out.println("***BUSCAR ESTUDIANTE POR ID***");
                     System.out.println("Ingrese el ID del estudiante:");
                     id = entrada.nextLine();
-                    validarEstudiante = estudianteService.BuscarEstudiante(id);
+                    validarEstudiante = estudianteService.buscarPorId(id);
                     if (validarEstudiante == false) {
                         System.out.println("¡Estudiante no existe!.");
                     }
@@ -102,7 +99,7 @@ public class Main {
                     System.out.println("***EDITAR ESTUDIANTE***");
                     System.out.println("Ingrese el ID del estudiante:");
                     id = entrada.nextLine();
-                    validarEstudiante = estudianteService.BuscarEstudiante(id);
+                    validarEstudiante = estudianteService.buscarPorId(id);
                     if (validarEstudiante == false) {
                         System.out.println("error!, ID no encontrado.");
                     } else {
@@ -150,11 +147,9 @@ public class Main {
                     System.out.println("***ELIMINAR ESTUDIANTE***");
                     System.out.println("Ingrese el ID del estudiante:");
                     id = entrada.nextLine();
-                    validarEstudiante = estudianteService.BuscarEstudiante(id);
-                    if (validarEstudiante == false) {
+                    if (!estudianteService.eliminarEstudiante(id)) {
                         System.out.println("¡estudiante no encontrado.!");
                     } else {
-                        estudianteService.eliminarEstudiante(id);
                         System.out.println("Estudiante Eliminado!");
                     }
                     id = "";

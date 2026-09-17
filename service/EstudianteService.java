@@ -16,15 +16,14 @@ public class EstudianteService {
     private int contador = 1;
 
     // funcion para agregar estudiante
-    public boolean agregarEstudiante(String nombre, String carrera, double promedio) {
+    public void agregarEstudiante(String nombre, String carrera, double promedio) {
         Estudiante estudiante = new Estudiante(generarId(), nombre, carrera, promedio);
         estudiantes.add(estudiante);
         System.out.println("Estudiante agregado con éxito! ID : " + estudiante.getId());
-        return true;
     }
 
     // funcion para buscar estudiante por nombre, carrera, promedio
-    public boolean buscarEstudiante(String nombre, String carrera, double promedio) {
+    public boolean existeEstudiante(String nombre, String carrera, double promedio) {
 
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getNombre().equalsIgnoreCase(nombre) && estudiante.getCarrerra().equalsIgnoreCase(carrera)
@@ -50,7 +49,7 @@ public class EstudianteService {
     }
 
     // bsucar estudiante por id
-    public boolean BuscarEstudiante(String id) {
+    public boolean buscarPorId(String id) {
 
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getId().equalsIgnoreCase(id)) {
@@ -80,15 +79,16 @@ public class EstudianteService {
     }
 
     // Eliminar Estudiante
-    public void eliminarEstudiante(String id) {
+    public boolean eliminarEstudiante(String id) {
 
         for (Estudiante estudianteTres : estudiantes) {
             if (estudianteTres.getId().equalsIgnoreCase(id)) {
                 // eliminar estudiante
                 estudiantes.remove(estudianteTres);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     // método para exportar la lista a archivo .csv
