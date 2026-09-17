@@ -39,8 +39,12 @@ public class Main {
             System.out.println("5. Eliminar estudiante");
             System.out.println("6. Exportar a CSV");
             System.out.println("7. Salir");
-            salir = entrada.nextInt();
-            entrada.nextLine();// Esta línea consume el salto de línea pendiente
+            try {
+                salir = Integer.parseInt(entrada.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: ingrese un número entre 1 y 7.");
+                continue;
+            }
             switch (salir) {
                 case 1:
                     System.out.println("***AGREGAR ESTUDIANTE****");
@@ -163,8 +167,11 @@ public class Main {
                     }
                     break;
 
-                default:
+                case 7:
                     System.out.println("¡que tenga buen día!");
+                    break;
+                default:
+                    System.out.println("Error: opción no válida. Ingrese un número entre 1 y 7.");
                     break;
             }
         }
