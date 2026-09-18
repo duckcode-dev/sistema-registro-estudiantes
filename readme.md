@@ -11,7 +11,9 @@ Este proyecto implementa un sistema CRUD (Crear, Leer, Actualizar, Eliminar) par
 - Eliminar registros : Elimina estudiantes del sistema.
 - Persistencia automática en CSV : Guarda los cambios en un archivo CSV después de agregar, editar o eliminar estudiantes.
 
-Estructura del Proyecto
+## Estructura del Proyecto
+
+```
 sistema-registro-estudiantes/
 ├── Main.java                  # Punto de entrada de la aplicación
 ├── model/
@@ -20,6 +22,7 @@ sistema-registro-estudiantes/
 │   └── EstudianteService.java # Servicios para gestionar estudiantes
 └── archivos csv/
     └── estudiantes.csv        # Archivo de exportación de datos
+```
 
 ## Captura de la Aplicación
 ![Menú principal del sistema](assets/menu-principal.png)
