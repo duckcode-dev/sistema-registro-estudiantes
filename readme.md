@@ -21,6 +21,9 @@ sistema-registro-estudiantes/
 └── archivos csv/
     └── estudiantes.csv        # Archivo de exportación de datos
 
+## Captura de la Aplicación
+![Menú principal del sistema](assets/menu-principal.png)
+
 ## Tecnologías Utilizadas
 - Java
 - Programación Orientada a Objetos (POO)
