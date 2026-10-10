@@ -51,7 +51,7 @@ public class Main {
 
                     while (nombre.isEmpty()) {
                         System.out.println("Nombre:");
-                        nombre = entrada.nextLine();
+                        nombre = entrada.nextLine().trim();
                         if (nombre.isEmpty()) {
                             System.out.println("error!, ingrese nombre válido.");
                         }
@@ -59,7 +59,7 @@ public class Main {
 
                     while (carrera.isEmpty()) {
                         System.out.println("Carrera:");
-                        carrera = entrada.nextLine();
+                        carrera = entrada.nextLine().trim();
                         if (carrera.isEmpty()) {
                             System.out.println("error!, ingrese carrera válido.");
                         }
@@ -114,14 +114,14 @@ public class Main {
                     } else {
                         while (nombre.isEmpty()) {
                             System.out.println("Nombre:");
-                            nombre = entrada.nextLine();
+                            nombre = entrada.nextLine().trim();
                             if (nombre.isEmpty()) {
                                 System.out.println("error!, ingrese nombre válido.");
                             }
                         }
                         while (carrera.isEmpty()) {
                             System.out.println("Carrera:");
-                            carrera = entrada.nextLine();
+                            carrera = entrada.nextLine().trim();
                             if (carrera.isEmpty()) {
                                 System.out.println("error!, ingrese carrera válido.");
                             }

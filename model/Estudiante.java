@@ -32,8 +32,8 @@ public class Estudiante {
             throw new IllegalArgumentException("La carrera del estudiante no puede ser null o vacía");
         }
         this.id = id;
-        this.nombre = nombre;
-        this.carrerra = carrerra;
+        this.nombre = nombre.trim();
+        this.carrerra = carrerra.trim();
         setPromedio(promedio);
     }
 
@@ -57,7 +57,7 @@ public class Estudiante {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede ser null o vacío");
         }
-        this.nombre = nombre;
+        this.nombre = nombre.trim();
     }
 
     public String getCarrerra() {
@@ -68,7 +68,7 @@ public class Estudiante {
         if (carrerra == null || carrerra.trim().isEmpty()) {
             throw new IllegalArgumentException("La carrera no puede ser null o vacía");
         }
-        this.carrerra = carrerra;
+        this.carrerra = carrerra.trim();
     }
 
     public double getPromedio() {
