@@ -1,5 +1,8 @@
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
+import model.Estudiante;
 import service.EstudianteService;
 
 /**
@@ -27,8 +30,8 @@ public class Main {
         String nombre = "";
         String carrera = "";
         double promedio = 0;
-        boolean validarEstudiante;
         EstudianteService.ResultadoOperacion resultadoOperacion;
+        Optional<Estudiante> estudianteEncontrado;
 
         while (salir != 6) {
             System.out.println("");
@@ -79,9 +82,13 @@ public class Main {
 
                     if (!estudianteService.existeEstudiante(nombre, carrera, promedio)) {
                         resultadoOperacion = estudianteService.agregarEstudiante(nombre, carrera, promedio);
-                        if (resultadoOperacion != EstudianteService.ResultadoOperacion.EXITOSA) {
+                        if (resultadoOperacion == EstudianteService.ResultadoOperacion.EXITOSA) {
+                            System.out.println("Estudiante agregado con éxito!");
+                        } else {
                             System.out.println("Error: no se pudo guardar el estudiante. No se realizaron cambios.");
                         }
+                    } else {
+                        System.out.println("El estudiante ya existe.");
                     }
                     nombre = "";
                     carrera = "";
@@ -90,7 +97,7 @@ public class Main {
 
                 case 2:
                     System.out.println("***LISTAR ESTUDIANTES****");
-                    estudianteService.listarEstudiantes();
+                    mostrarEstudiantes(estudianteService.listarEstudiantes());
                     break;
 
                 case 3:
@@ -99,19 +106,27 @@ public class Main {
                     nombre = entrada.nextLine().trim();
                     if (nombre.isEmpty()) {
                         System.out.println("Error: ingrese un nombre para buscar.");
-                    } else if (!estudianteService.buscarPorNombre(nombre)) {
-                        System.out.println("¡No se encontraron estudiantes con ese nombre!");
+                    } else {
+                        List<Estudiante> coincidencias = estudianteService.buscarPorNombre(nombre);
+                        if (coincidencias.isEmpty()) {
+                            System.out.println("¡No se encontraron estudiantes con ese nombre!");
+                        } else {
+                            System.out.println("Estudiantes encontrados:");
+                            mostrarEstudiantes(coincidencias);
+                        }
                     }
                     nombre = "";
                     break;
                 case 4:
                     System.out.println("***EDITAR ESTUDIANTE***");
                     System.out.println("Ingrese el ID del estudiante:");
-                    id = entrada.nextLine();
-                    validarEstudiante = estudianteService.buscarPorId(id);
-                    if (validarEstudiante == false) {
+                    id = entrada.nextLine().trim();
+                    estudianteEncontrado = estudianteService.buscarPorId(id);
+                    if (!estudianteEncontrado.isPresent()) {
                         System.out.println("error!, ID no encontrado.");
                     } else {
+                        System.out.println("Estudiante encontrado:");
+                        mostrarEstudiante(estudianteEncontrado.get());
                         while (nombre.isEmpty()) {
                             System.out.println("Nombre:");
                             nombre = entrada.nextLine().trim();
@@ -157,7 +172,7 @@ public class Main {
                 case 5:
                     System.out.println("***ELIMINAR ESTUDIANTE***");
                     System.out.println("Ingrese el ID del estudiante:");
-                    id = entrada.nextLine();
+                    id = entrada.nextLine().trim();
                     resultadoOperacion = estudianteService.eliminarEstudiante(id);
                     if (resultadoOperacion == EstudianteService.ResultadoOperacion.NO_ENCONTRADO) {
                         System.out.println("¡estudiante no encontrado.!");
@@ -182,5 +197,21 @@ public class Main {
 
     private static boolean esPromedioValido(double promedio) {
         return Double.isFinite(promedio) && promedio >= 1.0 && promedio <= 7.0;
+    }
+
+    private static void mostrarEstudiantes(List<Estudiante> estudiantes) {
+        if (estudiantes.isEmpty()) {
+            System.out.println("No hay estudiantes registrados.");
+            return;
+        }
+
+        for (Estudiante estudiante : estudiantes) {
+            mostrarEstudiante(estudiante);
+        }
+    }
+
+    private static void mostrarEstudiante(Estudiante estudiante) {
+        System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre()
+                + ", Carrera: " + estudiante.getCarrera() + ", Promedio: " + estudiante.getPromedio());
     }
 }

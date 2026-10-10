@@ -12,7 +12,7 @@ package model;
 public class Estudiante {
     private String id;
     private String nombre;
-    private String carrerra;
+    private String carrera;
     private double promedio;
 
     // constructor vacío
@@ -20,7 +20,7 @@ public class Estudiante {
     }
 
     // constructor parametrizado
-    public Estudiante(String id, String nombre, String carrerra, double promedio) {
+    public Estudiante(String id, String nombre, String carrera, double promedio) {
         // Validación para evitar valores null en campos críticos
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("El ID del estudiante no puede ser null o vacío");
@@ -28,12 +28,12 @@ public class Estudiante {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del estudiante no puede ser null o vacío");
         }
-        if (carrerra == null || carrerra.trim().isEmpty()) {
+        if (carrera == null || carrera.trim().isEmpty()) {
             throw new IllegalArgumentException("La carrera del estudiante no puede ser null o vacía");
         }
         this.id = id;
         this.nombre = nombre.trim();
-        this.carrerra = carrerra.trim();
+        this.carrera = carrera.trim();
         setPromedio(promedio);
     }
 
@@ -60,15 +60,15 @@ public class Estudiante {
         this.nombre = nombre.trim();
     }
 
-    public String getCarrerra() {
-        return carrerra;
+    public String getCarrera() {
+        return carrera;
     }
 
-    public void setCarrerra(String carrerra) {
-        if (carrerra == null || carrerra.trim().isEmpty()) {
+    public void setCarrera(String carrera) {
+        if (carrera == null || carrera.trim().isEmpty()) {
             throw new IllegalArgumentException("La carrera no puede ser null o vacía");
         }
-        this.carrerra = carrerra.trim();
+        this.carrera = carrera.trim();
     }
 
     public double getPromedio() {
@@ -84,7 +84,7 @@ public class Estudiante {
 
     @Override
     public String toString() {
-        return "Estudiante [id=" + id + ", nombre=" + nombre + ", carrerra=" + carrerra + ", promedio=" + promedio
+        return "Estudiante [id=" + id + ", nombre=" + nombre + ", carrera=" + carrera + ", promedio=" + promedio
                 + "]";
     }
 

@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import model.Estudiante;
 
@@ -44,7 +46,6 @@ public class EstudianteService {
         Estudiante estudiante = new Estudiante(generarId(), nombre, carrera, promedio);
         estudiantes.add(estudiante);
         if (guardarEnCsv()) {
-            System.out.println("Estudiante agregado con éxito! ID : " + estudiante.getId());
             return ResultadoOperacion.EXITOSA;
         }
 
@@ -57,9 +58,8 @@ public class EstudianteService {
     public boolean existeEstudiante(String nombre, String carrera, double promedio) {
 
         for (Estudiante estudiante : estudiantes) {
-            if (estudiante.getNombre().equalsIgnoreCase(nombre) && estudiante.getCarrerra().equalsIgnoreCase(carrera)
+            if (estudiante.getNombre().equalsIgnoreCase(nombre) && estudiante.getCarrera().equalsIgnoreCase(carrera)
                     && Double.compare(estudiante.getPromedio(), promedio) == 0) {
-                System.out.println("Estudiante ya existe ID: " + estudiante.getId());
                 return true;
             }
         }
@@ -71,46 +71,31 @@ public class EstudianteService {
         return String.format("EST%03d", contador++);
     }
 
-    public void listarEstudiantes() {
-        for (Estudiante estudiantecuatro : estudiantes) {
-            System.out.println("ID: " + estudiantecuatro.getId() + ", Nombre: " +
-                    estudiantecuatro.getNombre() + ", Carrera: "
-                    + estudiantecuatro.getCarrerra() + ", Promedio: " + estudiantecuatro.getPromedio());
-        }
+    public List<Estudiante> listarEstudiantes() {
+        return Collections.unmodifiableList(new ArrayList<>(estudiantes));
     }
 
-    // bsucar estudiante por id
-    public boolean buscarPorId(String id) {
+    public Optional<Estudiante> buscarPorId(String id) {
 
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getId().equalsIgnoreCase(id)) {
-                System.out.println("Estudiante Encontrado");
-                System.out.println("información del estudiante: ");
-                System.out.println("ID: " + estudiante.getId() + ", Nombre: " +
-                        estudiante.getNombre() + ", Carrera: "
-                        + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
-                return true;
+                return Optional.of(estudiante);
             }
         }
-        return false;
+        return Optional.empty();
     }
 
-    public boolean buscarPorNombre(String textoBuscado) {
+    public List<Estudiante> buscarPorNombre(String textoBuscado) {
         String busquedaNormalizada = textoBuscado.trim().toLowerCase(Locale.ROOT);
-        boolean encontrado = false;
+        List<Estudiante> coincidencias = new ArrayList<>();
 
         for (Estudiante estudiante : estudiantes) {
             String nombreNormalizado = estudiante.getNombre().toLowerCase(Locale.ROOT);
             if (nombreNormalizado.contains(busquedaNormalizada)) {
-                if (!encontrado) {
-                    System.out.println("Estudiantes encontrados:");
-                }
-                System.out.println("ID: " + estudiante.getId() + ", Nombre: " + estudiante.getNombre()
-                        + ", Carrera: " + estudiante.getCarrerra() + ", Promedio: " + estudiante.getPromedio());
-                encontrado = true;
+                coincidencias.add(estudiante);
             }
         }
-        return encontrado;
+        return coincidencias;
     }
 
     // modificar estudiante
@@ -119,17 +104,17 @@ public class EstudianteService {
         for (Estudiante estudianteDos : estudiantes) {
             if (estudianteDos.getId().equalsIgnoreCase(id)) {
                 String nombreAnterior = estudianteDos.getNombre();
-                String carreraAnterior = estudianteDos.getCarrerra();
+                String carreraAnterior = estudianteDos.getCarrera();
                 double promedioAnterior = estudianteDos.getPromedio();
                 estudianteDos.setNombre(nombre);
-                estudianteDos.setCarrerra(carrera);
+                estudianteDos.setCarrera(carrera);
                 estudianteDos.setPromedio(promedio);
                 if (guardarEnCsv()) {
                     return ResultadoOperacion.EXITOSA;
                 }
 
                 estudianteDos.setNombre(nombreAnterior);
-                estudianteDos.setCarrerra(carreraAnterior);
+                estudianteDos.setCarrera(carreraAnterior);
                 estudianteDos.setPromedio(promedioAnterior);
                 return ResultadoOperacion.ERROR_PERSISTENCIA;
             }
@@ -168,7 +153,7 @@ public class EstudianteService {
                     writer.write(String.format("%s,%s,%s,%s\n",
                             escaparCampoCsv(estudiante.getId()),
                             escaparCampoCsv(estudiante.getNombre()),
-                            escaparCampoCsv(estudiante.getCarrerra()),
+                            escaparCampoCsv(estudiante.getCarrera()),
                             escaparCampoCsv(String.valueOf(estudiante.getPromedio()))));
                 }
             }
@@ -176,15 +161,13 @@ public class EstudianteService {
             reemplazarArchivo(archivoTemporal);
             return true;
         } catch (IOException e) {
-            System.out.println(
-                    "Error al escribir el archivo CSV en " + RUTA_CSV.toAbsolutePath() + ": " + e.getMessage());
             return false;
         } finally {
             if (archivoTemporal != null) {
                 try {
                     Files.deleteIfExists(archivoTemporal);
                 } catch (IOException e) {
-                    System.out.println("No se pudo eliminar el archivo temporal: " + e.getMessage());
+                    // El archivo temporal se eliminará en una futura ejecución si aún existe.
                 }
             }
         }
@@ -221,11 +204,11 @@ public class EstudianteService {
                     estudiantes.add(estudiante);
                     actualizarContador(numeroId);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Se omitió una fila CSV inválida: " + (indice + 1));
+                    // La fila inválida se omite sin interrumpir la carga de las siguientes.
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error al cargar el archivo CSV: " + e.getMessage());
+            // Si el archivo no puede leerse, el servicio se inicia sin registros cargados.
         }
     }
 
