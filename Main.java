@@ -28,6 +28,7 @@ public class Main {
         String carrera = "";
         double promedio = 0;
         boolean validarEstudiante;
+        EstudianteService.ResultadoOperacion resultadoOperacion;
 
         while (salir != 6) {
             System.out.println("");
@@ -77,7 +78,10 @@ public class Main {
                     }
 
                     if (!estudianteService.existeEstudiante(nombre, carrera, promedio)) {
-                        estudianteService.agregarEstudiante(nombre, carrera, promedio);
+                        resultadoOperacion = estudianteService.agregarEstudiante(nombre, carrera, promedio);
+                        if (resultadoOperacion != EstudianteService.ResultadoOperacion.EXITOSA) {
+                            System.out.println("Error: no se pudo guardar el estudiante. No se realizaron cambios.");
+                        }
                     }
                     nombre = "";
                     carrera = "";
@@ -136,10 +140,12 @@ public class Main {
                             }
                         }
 
-                        validarEstudiante = estudianteService.editarEstudiante(id, nombre, carrera, promedio);
+                        resultadoOperacion = estudianteService.editarEstudiante(id, nombre, carrera, promedio);
 
-                        if (validarEstudiante) {
+                        if (resultadoOperacion == EstudianteService.ResultadoOperacion.EXITOSA) {
                             System.out.println("¡datos modificados de manera exitosa!");
+                        } else {
+                            System.out.println("Error: no se pudieron guardar los cambios. Se restauraron los datos anteriores.");
                         }
 
                         nombre = "";
@@ -152,10 +158,13 @@ public class Main {
                     System.out.println("***ELIMINAR ESTUDIANTE***");
                     System.out.println("Ingrese el ID del estudiante:");
                     id = entrada.nextLine();
-                    if (!estudianteService.eliminarEstudiante(id)) {
+                    resultadoOperacion = estudianteService.eliminarEstudiante(id);
+                    if (resultadoOperacion == EstudianteService.ResultadoOperacion.NO_ENCONTRADO) {
                         System.out.println("¡estudiante no encontrado.!");
-                    } else {
+                    } else if (resultadoOperacion == EstudianteService.ResultadoOperacion.EXITOSA) {
                         System.out.println("Estudiante Eliminado!");
+                    } else {
+                        System.out.println("Error: no se pudo guardar la eliminación. El estudiante no fue eliminado.");
                     }
                     id = "";
                     break;

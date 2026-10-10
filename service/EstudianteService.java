@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,6 +24,12 @@ import model.Estudiante;
 
 public class EstudianteService {
 
+    public enum ResultadoOperacion {
+        EXITOSA,
+        NO_ENCONTRADO,
+        ERROR_PERSISTENCIA
+    }
+
     private static final Path RUTA_CSV = Paths.get("archivos csv", "estudiantes.csv").toAbsolutePath();
     private final List<Estudiante> estudiantes = new ArrayList<>();
     private int contador = 1;
@@ -34,11 +39,18 @@ public class EstudianteService {
     }
 
     // funcion para agregar estudiante
-    public void agregarEstudiante(String nombre, String carrera, double promedio) {
+    public ResultadoOperacion agregarEstudiante(String nombre, String carrera, double promedio) {
+        int contadorAnterior = contador;
         Estudiante estudiante = new Estudiante(generarId(), nombre, carrera, promedio);
         estudiantes.add(estudiante);
-        guardarEnCsv();
-        System.out.println("Estudiante agregado con éxito! ID : " + estudiante.getId());
+        if (guardarEnCsv()) {
+            System.out.println("Estudiante agregado con éxito! ID : " + estudiante.getId());
+            return ResultadoOperacion.EXITOSA;
+        }
+
+        estudiantes.remove(estudiante);
+        contador = contadorAnterior;
+        return ResultadoOperacion.ERROR_PERSISTENCIA;
     }
 
     // funcion para buscar estudiante por nombre, carrera, promedio
@@ -102,32 +114,45 @@ public class EstudianteService {
     }
 
     // modificar estudiante
-    public boolean editarEstudiante(String id, String nombre, String carrera, double promedio) {
+    public ResultadoOperacion editarEstudiante(String id, String nombre, String carrera, double promedio) {
 
         for (Estudiante estudianteDos : estudiantes) {
             if (estudianteDos.getId().equalsIgnoreCase(id)) {
+                String nombreAnterior = estudianteDos.getNombre();
+                String carreraAnterior = estudianteDos.getCarrerra();
+                double promedioAnterior = estudianteDos.getPromedio();
                 estudianteDos.setNombre(nombre);
                 estudianteDos.setCarrerra(carrera);
                 estudianteDos.setPromedio(promedio);
-                guardarEnCsv();
-                return true;
+                if (guardarEnCsv()) {
+                    return ResultadoOperacion.EXITOSA;
+                }
+
+                estudianteDos.setNombre(nombreAnterior);
+                estudianteDos.setCarrerra(carreraAnterior);
+                estudianteDos.setPromedio(promedioAnterior);
+                return ResultadoOperacion.ERROR_PERSISTENCIA;
             }
         }
-        return false;
+        return ResultadoOperacion.NO_ENCONTRADO;
     }
 
     // Eliminar Estudiante
-    public boolean eliminarEstudiante(String id) {
+    public ResultadoOperacion eliminarEstudiante(String id) {
 
-        for (Iterator<Estudiante> iterator = estudiantes.iterator(); iterator.hasNext();) {
-            Estudiante estudianteTres = iterator.next();
+        for (int indice = 0; indice < estudiantes.size(); indice++) {
+            Estudiante estudianteTres = estudiantes.get(indice);
             if (estudianteTres.getId().equalsIgnoreCase(id)) {
-                iterator.remove();
-                guardarEnCsv();
-                return true;
+                estudiantes.remove(indice);
+                if (guardarEnCsv()) {
+                    return ResultadoOperacion.EXITOSA;
+                }
+
+                estudiantes.add(indice, estudianteTres);
+                return ResultadoOperacion.ERROR_PERSISTENCIA;
             }
         }
-        return false;
+        return ResultadoOperacion.NO_ENCONTRADO;
     }
 
     private boolean guardarEnCsv() {
