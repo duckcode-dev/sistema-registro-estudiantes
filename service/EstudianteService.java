@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,7 @@ import model.Estudiante;
 
 public class EstudianteService {
 
-    private static final Path RUTA_CSV = Paths.get("archivos csv", "estudiantes.csv");
+    private static final Path RUTA_CSV = Paths.get("archivos csv", "estudiantes.csv").toAbsolutePath();
     private final List<Estudiante> estudiantes = new ArrayList<>();
     private int contador = 1;
 
@@ -130,30 +131,49 @@ public class EstudianteService {
     }
 
     private boolean guardarEnCsv() {
+        Path archivoTemporal = null;
         try {
             Files.createDirectories(RUTA_CSV.getParent());
-        } catch (IOException e) {
-            System.out.println("No se pudo crear el directorio de exportación: " + e.getMessage());
-            return false;
-        }
+            archivoTemporal = Files.createTempFile(RUTA_CSV.getParent(), "estudiantes-", ".tmp");
 
-        try (java.io.BufferedWriter writer = Files.newBufferedWriter(RUTA_CSV, StandardCharsets.UTF_8)) {
-            // Escribir encabezados
-            writer.write("ID,Nombre,Carrera,Promedio\n");
+            try (java.io.BufferedWriter writer = Files.newBufferedWriter(archivoTemporal, StandardCharsets.UTF_8)) {
+                writer.write("ID,Nombre,Carrera,Promedio\n");
 
-            // Escribir datos de cada estudiante
-            for (Estudiante estudiante : estudiantes) {
-                writer.write(String.format("%s,%s,%s,%s\n",
-                        escaparCampoCsv(estudiante.getId()),
-                        escaparCampoCsv(estudiante.getNombre()),
-                        escaparCampoCsv(estudiante.getCarrerra()),
-                        escaparCampoCsv(String.valueOf(estudiante.getPromedio()))));
+                for (Estudiante estudiante : estudiantes) {
+                    writer.write(String.format("%s,%s,%s,%s\n",
+                            escaparCampoCsv(estudiante.getId()),
+                            escaparCampoCsv(estudiante.getNombre()),
+                            escaparCampoCsv(estudiante.getCarrerra()),
+                            escaparCampoCsv(String.valueOf(estudiante.getPromedio()))));
+                }
             }
+
+            reemplazarArchivo(archivoTemporal);
             return true;
         } catch (IOException e) {
             System.out.println(
                     "Error al escribir el archivo CSV en " + RUTA_CSV.toAbsolutePath() + ": " + e.getMessage());
             return false;
+        } finally {
+            if (archivoTemporal != null) {
+                try {
+                    Files.deleteIfExists(archivoTemporal);
+                } catch (IOException e) {
+                    System.out.println("No se pudo eliminar el archivo temporal: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void reemplazarArchivo(Path archivoTemporal) throws IOException {
+        try {
+            Files.move(archivoTemporal, RUTA_CSV,
+                    StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            if (!Files.exists(archivoTemporal)) {
+                throw e;
+            }
+            Files.move(archivoTemporal, RUTA_CSV, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
