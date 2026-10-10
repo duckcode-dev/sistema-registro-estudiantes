@@ -6,7 +6,7 @@ Este proyecto implementa un sistema CRUD (Crear, Leer, Actualizar, Eliminar) par
 ## Características
 - Agregar estudiantes : Registra nuevos estudiantes con validación de datos.
 - Listar estudiantes : Muestra todos los estudiantes registrados en el sistema.
-- Buscar por ID : Permite encontrar un estudiante específico mediante su identificador único.
+- Buscar por nombre : Encuentra uno o más estudiantes mediante coincidencias parciales en su nombre.
 - Editar información : Actualiza los datos de estudiantes existentes.
 - Eliminar registros : Elimina estudiantes del sistema.
 - Persistencia automática en CSV : Guarda los cambios en un archivo CSV después de agregar, editar o eliminar estudiantes.
@@ -31,7 +31,7 @@ sistema-registro-estudiantes/
 - Java
 - Programación Orientada a Objetos (POO)
 - Colecciones (ArrayList)
-- Arquitectura MVC (Modelo-Vista-Controlador)
+- Organización por responsabilidades: interfaz de consola, modelo y servicio
 
 ## Requisitos
 - JDK 8 o superior
@@ -55,6 +55,7 @@ java Main
 - Los estudiantes se identifican con un ID único generado automáticamente (formato: EST001, EST002, etc.)
 - Se valida que los campos no estén vacíos
 - El promedio debe estar en el rango de 1.0 a 7.0
+- La búsqueda por nombre ignora mayúsculas y minúsculas, y muestra todas las coincidencias parciales
 
 ### Persistencia en CSV
 - Los datos se guardan automáticamente en un archivo CSV ubicado en la carpeta "archivos csv"
@@ -65,7 +66,7 @@ Este proyecto demuestra:
 
 - Comprensión de Programación Orientada a Objetos
 - Uso de colecciones en Java
-- Separación de responsabilidades (patrón MVC)
+- Separación de responsabilidades entre la interfaz de consola (`Main`), el modelo (`Estudiante`) y la lógica de gestión (`EstudianteService`)
 - Validación de datos de entrada
 - Manejo de archivos
 
