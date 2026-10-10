@@ -34,7 +34,8 @@ public class Estudiante {
         this.id = id;
         this.nombre = nombre.trim();
         this.carrera = carrera.trim();
-        setPromedio(promedio);
+        validarPromedio(promedio);
+        this.promedio = promedio;
     }
 
     // Métodos getter y setter con validaciones
@@ -76,10 +77,14 @@ public class Estudiante {
     }
 
     public void setPromedio(double promedio) {
+        validarPromedio(promedio);
+        this.promedio = promedio;
+    }
+
+    private static void validarPromedio(double promedio) {
         if (!Double.isFinite(promedio) || promedio < 1.0 || promedio > 7.0) {
             throw new IllegalArgumentException("El promedio debe estar entre 1.0 y 7.0");
         }
-        this.promedio = promedio;
     }
 
     @Override
