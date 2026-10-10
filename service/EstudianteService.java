@@ -210,17 +210,16 @@ public class EstudianteService {
         try {
             List<String> lineas = Files.readAllLines(RUTA_CSV, StandardCharsets.UTF_8);
             for (int indice = 1; indice < lineas.size(); indice++) {
-                List<String> campos = separarCamposCsv(lineas.get(indice));
-                if (campos.size() != 4) {
-                    System.out.println("Se omitió una fila CSV inválida: " + (indice + 1));
-                    continue;
-                }
-
                 try {
+                    List<String> campos = separarCamposCsv(lineas.get(indice));
+                    if (campos.size() != 4) {
+                        throw new IllegalArgumentException("Cantidad de columnas inválida");
+                    }
+                    int numeroId = obtenerNumeroId(campos.get(0));
                     Estudiante estudiante = new Estudiante(
                             campos.get(0), campos.get(1), campos.get(2), Double.parseDouble(campos.get(3)));
                     estudiantes.add(estudiante);
-                    actualizarContador(campos.get(0));
+                    actualizarContador(numeroId);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Se omitió una fila CSV inválida: " + (indice + 1));
                 }
@@ -252,15 +251,32 @@ public class EstudianteService {
             }
         }
 
+        if (entreComillas) {
+            throw new IllegalArgumentException("Campo CSV con comillas sin cerrar");
+        }
+
         campos.add(campo.toString());
         return campos;
     }
 
-    private void actualizarContador(String id) {
-        if (id.matches("EST\\d+")) {
-            int numeroId = Integer.parseInt(id.substring(3));
-            contador = Math.max(contador, numeroId + 1);
+    private int obtenerNumeroId(String id) {
+        if (!id.matches("EST\\d+")) {
+            throw new IllegalArgumentException("Formato de ID inválido");
         }
+
+        try {
+            int numeroId = Integer.parseInt(id.substring(3));
+            if (numeroId < 1 || numeroId == Integer.MAX_VALUE) {
+                throw new IllegalArgumentException("Número de ID fuera de rango");
+            }
+            return numeroId;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Número de ID fuera de rango", e);
+        }
+    }
+
+    private void actualizarContador(int numeroId) {
+        contador = Math.max(contador, numeroId + 1);
     }
 
     private String escaparCampoCsv(String valor) {
